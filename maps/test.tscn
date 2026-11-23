@@ -1,14 +1,27 @@
 [gd_scene format=3 uid="uid://ce61cirtwo8ad"]
 
-[ext_resource type="Script" uid="uid://1ncf866ehi7y" path="res://maps/garbage_pile.gd" id="2_3akd8"]
+[ext_resource type="Texture2D" uid="uid://bfo12qbtfyni4" path="res://assets/textures/bathmat_bathMat.png" id="1_cncnj"]
+[ext_resource type="Script" uid="uid://dgj3jkbdrfw7g" path="res://maps/movement.gd" id="1_gyc4i"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_g4v7s"]
+size = Vector2(10, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yf5fn"]
-albedo_color = Color(0.3053506, 0.17151424, 0.012333553, 1)
+albedo_texture = ExtResource("1_cncnj")
+texture_filter = 0
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_b6wm1"]
-data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_cncnj"]
+data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0, -5)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g4v7s"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yf5fn"]
+radius = 0.2211914
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_57qmd"]
+albedo_color = Color(0.8431549, 0, 0.1898843, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
 
 [node name="Test" type="Node3D" unique_id=1478850930]
 
@@ -17,16 +30,31 @@ transform = Transform3D(3.005, 0, 0, 0, 3.005, 0, 0, 0, 3.005, 0, 0, 0)
 mesh = SubResource("PlaneMesh_g4v7s")
 surface_material_override/0 = SubResource("StandardMaterial3D_yf5fn")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Floor" unique_id=794518407]
+[node name="StaticBody3D2" type="StaticBody3D" parent="Floor" unique_id=2108136519]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D" unique_id=989309388]
-shape = SubResource("ConcavePolygonShape3D_b6wm1")
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1796731124]
-transform = Transform3D(1, 0, 0, 0, 0.7888993, 0.6145225, 0, -0.6145225, 0.7888993, 0.24867326, 1.9754125, 2.6621485)
-
-[node name="Node3D" type="Node3D" parent="." unique_id=368505743]
-script = ExtResource("2_3akd8")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D2" unique_id=487903694]
+shape = SubResource("ConcavePolygonShape3D_cncnj")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1769962705]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6273111, 0)
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=889569249]
+script = ExtResource("1_gyc4i")
+
+[node name="mesh" type="Node3D" parent="Player" unique_id=861342164]
+
+[node name="body" type="MeshInstance3D" parent="Player/mesh" unique_id=867259413]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_g4v7s")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/mesh" unique_id=1828077279]
+transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, -0.0012364388, 1, -1.0781552)
+mesh = SubResource("CapsuleMesh_yf5fn")
+surface_material_override/0 = SubResource("StandardMaterial3D_57qmd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=2004481633]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_g4v7s")
+
+[node name="Camera3D" type="Camera3D" parent="Player" unique_id=1796731124]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 9.437723, 0)
