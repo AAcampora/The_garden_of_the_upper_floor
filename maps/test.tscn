@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://bfo12qbtfyni4" path="res://assets/textures/bathmat_bathMat.png" id="1_cncnj"]
 [ext_resource type="Script" uid="uid://dgj3jkbdrfw7g" path="res://maps/movement.gd" id="1_gyc4i"]
+[ext_resource type="PackedScene" uid="uid://doqe4svdffpv0" path="res://entities/box_test.tscn" id="4_b6wm1"]
+[ext_resource type="Script" uid="uid://kbpcwfsd0we5" path="res://maps/PickupLogic.gd" id="5_p348t"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_g4v7s"]
 size = Vector2(10, 10)
@@ -15,18 +17,12 @@ data = PackedVector3Array(5, 0, 5, -5, 0, 5, 5, 0, -5, -5, 0, 5, -5, 0, -5, 5, 0
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g4v7s"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_yf5fn"]
-radius = 0.2211914
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_57qmd"]
-albedo_color = Color(0.8431549, 0, 0.1898843, 1)
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
 
 [node name="Test" type="Node3D" unique_id=1478850930]
 
 [node name="Floor" type="MeshInstance3D" parent="." unique_id=389829509]
-transform = Transform3D(3.005, 0, 0, 0, 3.005, 0, 0, 0, 3.005, 0, 0, 0)
+transform = Transform3D(3.005, 0, 0, 0, 3.005, 0, 0, 0, 3.005, -0.0012905598, 0.0061836243, 0.0071344376)
 mesh = SubResource("PlaneMesh_g4v7s")
 surface_material_override/0 = SubResource("StandardMaterial3D_yf5fn")
 
@@ -35,22 +31,27 @@ surface_material_override/0 = SubResource("StandardMaterial3D_yf5fn")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D2" unique_id=487903694]
 shape = SubResource("ConcavePolygonShape3D_cncnj")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1769962705]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6273111, 0)
-
 [node name="Player" type="CharacterBody3D" parent="." unique_id=889569249]
 script = ExtResource("1_gyc4i")
 
 [node name="mesh" type="Node3D" parent="Player" unique_id=861342164]
 
+[node name="Hand" type="Node3D" parent="Player/mesh" unique_id=653085104]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1641532e-10, 0.5570073, -1.9536066)
+script = ExtResource("5_p348t")
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/mesh/Hand" unique_id=245974001]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.030659258, 1.5036175)
+target_position = Vector3(0, -1.965, 0)
+collision_mask = 3
+
 [node name="body" type="MeshInstance3D" parent="Player/mesh" unique_id=867259413]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_g4v7s")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/mesh" unique_id=1828077279]
-transform = Transform3D(1.9106855e-15, 4.371139e-08, 1, 1, -4.371139e-08, 0, 4.371139e-08, 1, -4.371139e-08, -0.0012364388, 1, -1.0781552)
-mesh = SubResource("CapsuleMesh_yf5fn")
-surface_material_override/0 = SubResource("StandardMaterial3D_57qmd")
+[node name="SpotLight3D" type="SpotLight3D" parent="Player/mesh" unique_id=325922442]
+light_energy = 5.19
+spot_range = 6.2992473
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=2004481633]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -58,3 +59,6 @@ shape = SubResource("CapsuleShape3D_g4v7s")
 
 [node name="Camera3D" type="Camera3D" parent="Player" unique_id=1796731124]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 9.437723, 0)
+
+[node name="boxTest" parent="." unique_id=1218159921 instance=ExtResource("4_b6wm1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.196499)
